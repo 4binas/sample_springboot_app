@@ -1,0 +1,106 @@
+{
+  "Resources": {
+    "CustomerCore": {
+      "Type": "AWS::ElasticBeanstalk::Application",
+      "Properties": {
+        "ApplicationName": "customercore",
+        "Description": "AWS Elastic Beanstalk Environment running Customer Core Application"
+      }
+    },
+    "CustomerCoreVersion": {
+      "Type": "AWS::ElasticBeanstalk::ApplicationVersion",
+      "Properties": {
+        "ApplicationName": {
+          "Ref": "CustomerCore"
+        },
+        "Description": "AWS Elastic Beanstalk Environment running Customer Core Environment",
+        "SourceBundle": {
+          "S3Bucket": "lakeside-mutual",
+          "S3Key": "customer-core.zip"
+        }
+      }
+    },
+    "CustomerCoreEnv": {
+      "Type": "AWS::ElasticBeanstalk::Environment",
+      "Properties": {
+        "EnvironmentName": "CustomerCoreEnv",
+        "ApplicationName": {
+          "Ref": "CustomerCore"
+        },
+        "Description": "AWS Elastic Beanstalk Environment running Customer Core Environment",
+        "VersionLabel": {
+          "Ref": "CustomerCoreVersion"
+        },
+        "SolutionStackName": "64bit Amazon Linux 2 v3.2.14 running Corretto 11",
+        "OptionSettings": [
+          {
+            "Namespace": "aws:elasticbeanstalk:environment",
+            "OptionName": "EnvironmentType",
+            "Value": "SingleInstance"
+          },
+          {
+            "Namespace": "aws:autoscaling:launchconfiguration",
+            "OptionName": "IamInstanceProfile",
+            "Value": "aws-elasticbeanstalk-ec2-role"
+          },
+          {
+            "Namespace": "aws:elasticbeanstalk:environment",
+            "OptionName": "ServiceRole",
+            "Value": "aws-elasticbeanstalk-service-role"
+          }
+        ]
+      }
+    },
+    "CustomerManagementBackend": {
+      "Type": "AWS::ElasticBeanstalk::Application",
+      "Properties": {
+        "ApplicationName": "customerManagementBackend",
+        "Description": "AWS Elastic Beanstalk Environment running CustomerManagementBackend Application"
+      }
+    },
+    "CustomerManagementBackendVersion": {
+      "Type": "AWS::ElasticBeanstalk::ApplicationVersion",
+      "Properties": {
+        "ApplicationName": {
+          "Ref": "CustomerManagementBackend"
+        },
+        "Description": "AWS Elastic Beanstalk Environment running Customer Core Environment",
+        "SourceBundle": {
+          "S3Bucket": "lakeside-mutual",
+          "S3Key": "customer-management-backend.zip"
+        }
+      }
+    },
+    "CustomerManagementBackendEnv": {
+      "Type": "AWS::ElasticBeanstalk::Environment",
+      "Properties": {
+        "EnvironmentName": "CustomerManagementBackendEnv",
+        "ApplicationName": {
+          "Ref": "CustomerManagementBackend"
+        },
+        "Description": "AWS Elastic Beanstalk Environment running Customer ManagementBackend Environment",
+        "SolutionStackName": "64bit Amazon Linux 2 v3.2.14 running Corretto 11",
+        "VersionLabel": {
+          "Ref": "CustomerManagementBackendVersion"
+        },
+        "OptionSettings": [
+          {
+            "Namespace": "aws:elasticbeanstalk:environment",
+            "OptionName": "EnvironmentType",
+            "Value": "SingleInstance"
+          },
+          {
+            "Namespace": "aws:autoscaling:launchconfiguration",
+            "OptionName": "IamInstanceProfile",
+            "Value": "aws-elasticbeanstalk-ec2-role"
+          },
+          {
+            "Namespace": "aws:elasticbeanstalk:environment",
+            "OptionName": "ServiceRole",
+            "Value": "aws-elasticbeanstalk-service-role"
+          }
+        ]
+      }
+    }
+  }
+}
